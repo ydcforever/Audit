@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.btw.parser.mapper.ExchangeMapper">
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO ITAX_AUDITOR_EXCHANGE
+        (DATE_MONTH,
+        CHANGE_TICKET_NO,
+        CHANGE_ISSUE_DATE,
+        NO,
+        ORIGIN_TICKET_NO,
+        CORRESPONDENCE,
+        ORIGIN_ISSUE_DATE,
+        SALES_SOURCE,
+        ORI_SOURCE)
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+            SELECT
+            #{item.dateMonth, jdbcType=VARCHAR},
+            #{item.changeTicketNo, jdbcType=VARCHAR},
+            #{item.changeIssueDate, jdbcType=VARCHAR},
+            #{item.no, jdbcType=VARCHAR},
+            #{item.originTicketNo, jdbcType=VARCHAR},
+            #{item.correspondence, jdbcType=VARCHAR},
+            #{item.originIssueDate, jdbcType=VARCHAR},
+            #{item.salesSource, jdbcType=VARCHAR},
+            #{item.oriSource, jdbcType=VARCHAR}
+            FROM DUAL
+        </foreach>
+    </insert>
+</mapper>
