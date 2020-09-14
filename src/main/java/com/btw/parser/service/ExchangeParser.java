@@ -21,7 +21,6 @@ public class ExchangeParser implements IParser{
     @Autowired
     private ExchangeMapper exchangeMapper;
 
-    @Autowired
     public void parse(File file) throws Exception {
         BatchInsertDB<AuditorExchange> insertDB = new BatchInsertDB<AuditorExchange>(){
             @Override

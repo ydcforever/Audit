@@ -36,6 +36,7 @@
         <property name="locations">
             <list>
                 <value>classpath:jdbc.properties</value>
+                <value>classpath:module_params.properties</value>
             </list>
         </property>
     </bean>

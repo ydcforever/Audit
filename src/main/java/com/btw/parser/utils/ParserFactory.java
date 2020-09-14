@@ -4,6 +4,7 @@ import com.btw.parser.mapper.ParserLogMapper;
 import com.btw.parser.service.IParser;
 import com.fate.file.parse.DBSteerableConfig;
 import com.fate.file.transfer.FileSelector;
+import com.github.junrar.Junrar;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.File;
@@ -73,6 +74,7 @@ public class ParserFactory {
                 try {
                     //日志代理
 //                    IParser pro = new ParserLoggerProxy(logMapper, fileType, name, iParser).getTarget();
+                    Junrar.extract(file.getPath(), this.unzipDir);
                     iParser.parse(file);
                     config.updateOrder(fileType, order);
                     if (delete) {
