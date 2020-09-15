@@ -4,6 +4,7 @@ import com.btw.parser.mapper.ParserLogMapper;
 import com.btw.parser.service.IParser;
 import com.fate.file.parse.DBSteerableConfig;
 import com.fate.file.transfer.FileSelector;
+import com.fate.log.ParserLoggerProxy;
 import com.github.junrar.Junrar;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -33,7 +34,7 @@ public class ParserFactory {
 
     public ParserFactory(JdbcTemplate jdbcTemplate) {
         this.config = new DBSteerableConfig(jdbcTemplate);
-        Map<String, Object> info = config.queryFileStorage(fileType);
+        Map<String, Object> info = config.queryNoFtpStorage(fileType);
         if (info == null) {
             valid = false;
         } else {
@@ -56,26 +57,23 @@ public class ParserFactory {
         }
     }
 
-    //    public String lastDate(String ftype) {
-//
-//    }
-//
-//    public String updateDate(String ftype, String date) {
-//
-//    }
+    public ParserFactory logMapper(ParserLogMapper logMapper) {
+        this.logMapper = logMapper;
+        return this;
+    }
 
     public <T> void parseUnrarDir(IParser iParser, boolean delete) {
-        File[] files = new File(unzipDir).listFiles();
+        File[] files = new File(saveDir).listFiles();
         assert files != null;
         for (File file : files) {
             String name = file.getName();
             String order = fileSelector.getOrder(name);
             if (fileSelector.acceptFile(name) && fileSelector.acceptOrder(order)) {
                 try {
-                    //日志代理
-//                    IParser pro = new ParserLoggerProxy(logMapper, fileType, name, iParser).getTarget();
                     Junrar.extract(file.getPath(), this.unzipDir);
-                    iParser.parse(file);
+                    //日志代理
+                    IParser pro = new ParserLoggerProxy(logMapper, fileType, name, iParser).getTarget();
+                    pro.parse(file);
                     config.updateOrder(fileType, order);
                     if (delete) {
                         file.delete();
