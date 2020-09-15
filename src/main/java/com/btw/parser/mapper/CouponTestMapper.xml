@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.btw.parser.mapper.CouponTestMapper">
+    <resultMap type="com.btw.parser.model.AuditorCouponTest" id="auditorCouponTest">
+        <result column="TICKET_NO" property="ticketNo" jdbcType="DECIMAL"/>
+        <result column="SALES_CURRENCY_CODE" property="salesCurrencyCode" jdbcType="VARCHAR"/>
+        <result column="ROUTING" property="routing" jdbcType="VARCHAR"/>
+        <result column="ISSUE_DATE" property="issueDate" jdbcType="VARCHAR"/>
+        <result column="CLASS" property="clazz" jdbcType="VARCHAR"/>
+        <result column="PAX_TYPE" property="paxType" jdbcType="VARCHAR"/>
+        <result column="FARE" property="fare" jdbcType="DECIMAL"/>
+        <result column="ET_TYPE" property="etType" jdbcType="VARCHAR"/>
+        <result column="SALES_TYPE" property="salesType" jdbcType="VARCHAR"/>
+        <result column="SALES_STATION" property="salesStation" jdbcType="VARCHAR"/>
+        <result column="GDS_SYSTEM" property="gdsSystem" jdbcType="VARCHAR"/>
+        <result column="SALES_SOURCE" property="salesSource" jdbcType="VARCHAR"/>
+        <result column="AGENT_IATA_NO" property="agentIataNo" jdbcType="DECIMAL"/>
+        <result column="OPERATING_CARRIER" property="operatingCarrier" jdbcType="VARCHAR"/>
+        <result column="ORI_SOURCE" property="oriSource" jdbcType="VARCHAR"/>
+        <result column="DEPARTURE_DATE" property="departureDate" jdbcType="VARCHAR"/>
+        <result column="ARRIVE_DATE" property="arriveDate" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO ITAX_AUDITOR_COUPON_TEST
+        (ticket_no,
+        sales_currency_code,
+        routing,
+        issue_date,
+        class,
+        pax_type,
+        fare,
+        et_type,
+        sales_type,
+        sales_station,
+        gds_system,
+        sales_source,
+        agent_iata_no,
+        operating_carrier,
+        ori_source,
+        departure_date,
+        arrive_date)
+        <foreach collection="list" item="item" index="index" separator="UNION ALL" >
+            SELECT
+            #{item.ticketNo, jdbcType=DECIMAL},
+            #{item.salesCurrencyCode, jdbcType=VARCHAR},
+            #{item.routing, jdbcType=VARCHAR},
+            #{item.issueDate, jdbcType=VARCHAR},
+            #{item.clazz, jdbcType=VARCHAR},
+            #{item.paxType, jdbcType=VARCHAR},
+            #{item.fare, jdbcType=DECIMAL},
+            #{item.etType, jdbcType=VARCHAR},
+            #{item.salesType, jdbcType=VARCHAR},
+            #{item.salesStation, jdbcType=VARCHAR},
+            #{item.gdsSystem, jdbcType=VARCHAR},
+            #{item.salesSource, jdbcType=VARCHAR},
+            #{item.agentIataNo, jdbcType=DECIMAL},
+            #{item.operatingCarrier, jdbcType=VARCHAR},
+            #{item.oriSource, jdbcType=VARCHAR},
+            #{item.departureDate, jdbcType=VARCHAR},
+            #{item.arriveDate, jdbcType=VARCHAR}
+            FROM DUAL
+        </foreach>
+    </insert>
+</mapper>

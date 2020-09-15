@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.btw.parser.mapper.CouponTaxTestMapper">
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO ITAX_AUDITOR_COUPON_TAX_TEST
+        (ticket_no,
+        tax_code,
+        tax_definition,
+        sales_currency_code,
+        tax_amount_received,
+        tax_amount_due,
+        diff_amount,
+        line_no,
+        diff_precent)
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+            SELECT
+            #{item.ticketNo, jdbcType=DECIMAL},
+            #{item.taxCode, jdbcType=VARCHAR},
+            #{item.taxDefinition, jdbcType=VARCHAR},
+            #{item.salesCurrencyCode, jdbcType=VARCHAR},
+            #{item.taxAmountReceived, jdbcType=DECIMAL},
+            #{item.taxAmountDue, jdbcType=DECIMAL},
+            #{item.diffAmount, jdbcType=DECIMAL},
+            #{item.lineNo, jdbcType=DECIMAL},
+            #{item.diffPrecent, jdbcType=DECIMAL}
+            FROM DUAL
+        </foreach>
+    </insert>
+</mapper>

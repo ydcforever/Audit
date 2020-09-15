@@ -44,6 +44,7 @@ public class FTPFactory {
         return saveRoot;
     }
 
+
     private void checkSaveDir(String path){
         File file = new File(path);
         if(!file.exists() || !file.isDirectory()){
