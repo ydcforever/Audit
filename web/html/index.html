@@ -3,8 +3,175 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <script type="text/javascript" src="./js/jquery-1.7.2.min.js"></script>
+    <style type="text/css">
+        .close {
+            color: lightgray;
+        }
+
+        input[type='text'] {
+            width: 90px;
+        }
+    </style>
 </head>
 <body>
+<tr>
+    <td>Exchange</td>
+    <td><input type="text" data-begin="Exchange" placeholder="起始标志"/><input type="text" data-end="Exchange"
+                                                                            placeholder="终止标志"/></td>
+    <td><input class="one" type="button" value="单次" data-url="./audit/parser/exchange.do" data-ref="Exchange"></td>
+    <td><input type="text" id="Exchange"/></td>
+    <td><input class="start" type="button" value="开启" data-id="Exchange" data-cron="Exchange_cron"></td>
+    <td><input type="text" id="Exchange_cron" placeholder="0 15 10 * * ?"/></td>
+    <td><input class="stop" type="button" value="停止" data-id="Exchange"></td>
+</tr>
 
+<tr>
+    <td>Refund</td>
+    <td><input type="text" data-begin="Refund"/><input type="text" data-end="Refund"/></td>
+    <td><input class="one" type="button" value="单次" data-url="./audit/parser/refund.do" data-ref="Refund"></td>
+    <td><input type="text" id="Refund"/></td>
+    <td><input class="start" type="button" value="开启" data-id="Refund" data-cron="Refund_cron"></td>
+    <td><input type="text" id="Refund_cron"/></td>
+    <td><input class="stop" type="button" value="停止" data-id="Refund"></td>
+</tr>
+
+<tr>
+    <td>Status</td>
+    <td><input type="text" data-begin="Status"/><input type="text" data-end="Status"/></td>
+    <td><input class="one" type="button" value="单次" data-url="./audit/parser/status.do" data-ref="Status"></td>
+    <td><input type="text" id="Status"/></td>
+    <td><input class="start" type="button" value="开启" data-id="Status" data-cron="Status_cron"></td>
+    <td><input type="text" id="Status_cron"/></td>
+    <td><input class="stop" type="button" value="停止" data-id="Status"></td>
+</tr>
+
+<tr>
+    <td>itaxCoupon</td>
+    <td><input type="text" data-begin="Coupon"/><input type="text" data-end="Coupon"/></td>
+    <td><input class="one" type="button" value="单次" data-url="./audit/parser/coupon.do" data-ref="Coupon"></td>
+    <td><input type="text" id="Coupon"/></td>
+    <td><input class="start" type="button" value="开启" data-id="Coupon" data-cron="Coupon_cron"></td>
+    <td><input type="text" id="Coupon_cron"/></td>
+    <td><input class="stop" type="button" value="停止" data-id="Coupon"></td>
+</tr>
+<script type="text/javascript">
+    $(function () {
+        $(".one").each(function () {
+            var module = $(this).attr("data-ref");
+            getFlag(module);
+        });
+
+        $(".one").click(function () {
+            var id = $(this).attr("data-ref");
+            var url = $(this).attr("data-url");
+            $("#" + id).css("color", "black");
+            $("#" + id).val("开始解析");
+            var b = $("input[data-begin='" + id + "']").val();
+            var e = $("input[data-end='" + id + "']").val();
+            $.ajax({
+                type: "POST",
+                url: "./cfg/update.do",
+                data: {id: id, begin : b, end : e},
+                dataType: "json",
+                success: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        success: function () {
+                            $("#" + id).val("解析成功");
+                            getFlag(id);
+                        },
+                        error: function () {
+                            $("#" + id).css("color", "red");
+                            $("#" + id).val("解析失败");
+                        }
+                    });
+                },
+                error: function () {
+                    alert("文件选择器更新失败");
+                }
+            });
+        });
+
+        $(".start").click(function () {
+            var id = $(this).attr("data-id");
+            var cron=$("#" +$(this).attr("data-cron")).val();
+            var b = $("input[data-begin='" + id + "']").val();
+            var e = $("input[data-end='" + id + "']").val();
+            if(b != "" || e != "") {
+                $.ajax({
+                    type: "POST",
+                    url: "./cfg/update.do",
+                    data: {id: id, begin : b, end : e},
+                    dataType: "json",
+                    success: function () {
+                        if (cron == null || cron == "") {
+                            $.ajax({
+                                type: "POST",
+                                url: './job/start.do',
+                                data : {id : id},
+                                success: function () {
+                                    alert(id + "开启定时")
+                                },
+                                error: function () {
+
+                                }
+                            });
+                        } else {
+                            $.ajax({
+                                type: "POST",
+                                url: './job/modify.do',
+                                data : {id : id, cron : cron},
+                                success: function () {
+                                    alert(id + "开启定时");
+                                },
+                                error: function () {
+
+                                }
+                            });
+                        }
+                    },
+                    error: function () {
+                        alert("文件选择器更新失败");
+                    }
+                });
+            }
+        });
+
+        $(".stop").click(function () {
+            var id = $(this).attr("data-id");
+            $.ajax({
+                type: "POST",
+                url: './job/stop.do',
+                data : {id : id},
+                success: function () {
+                    alert(id + "定时停止");
+                },
+                error: function () {
+
+                }
+            });
+        });
+    });
+
+    function getFlag(module) {
+        $.ajax({
+            type: "GET",
+            url: "./cfg/query.do",
+            data: {id: module},
+            dataType: "json",
+            success: function (data) {
+                if(data != null && data != ""){
+                    $("input[data-begin='" + module + "']").val(data.BEGIN_FLAG);
+                    $("input[data-end='" + module + "']").val(data.END_FLAG);
+                }
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>
 </body>
 </html>
