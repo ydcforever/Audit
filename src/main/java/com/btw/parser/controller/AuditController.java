@@ -33,15 +33,14 @@ public class AuditController {
     @RequestMapping(value = "/exchange.do", method = RequestMethod.POST)
     @SteerableSchedule(id = "Exchange", cron = "0 30 14 ? * *")
     public void exchange() throws Exception{
-        ParserFactory factory = new ParserFactory(jdbcTemplate).logMapper(logMapper);
+        ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_EXCHANGE").logMapper(logMapper);
         factory.parseUnrarDir(exchangeParser, false);
     }
 
     @RequestMapping(value = "/refund.do", method = RequestMethod.POST)
     @SteerableSchedule(id = "Refund", cron = "0 30 14 ? * *")
     public void refund() throws Exception{
-        ParserFactory factory = new ParserFactory(jdbcTemplate).logMapper(logMapper);
+        ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_REFUND").logMapper(logMapper);
         factory.parseUnrarDir(refundParser, false);
     }
-
 }

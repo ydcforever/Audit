@@ -1,4 +1,4 @@
-package com.btw.parser.model;
+package com.btw.parser.utils;
 
 import com.fate.file.transfer.FTPAccessor;
 import com.fate.file.transfer.FileSelector;
@@ -28,20 +28,18 @@ public class FTPFactory {
     private String serverRoot;
 
     @Value("${download.path}")
-    private String saveRoot;
+    private String downloadPath;
 
     public FTPFactory() {
     }
 
-    public void download(String module, FileSelector fileSelector) throws Exception {
-        String saveDir = this.saveRoot + module;
-        String serverDir = this.serverRoot + module;
-        checkSaveDir(saveDir);
-        FTPAccessor.accessWithFtpFileProcessor(host, port, username, password, fileSelector, saveDir, true, serverDir);
+    public void download(FileSelector fileSelector) throws Exception {
+        checkSaveDir(downloadPath);
+        FTPAccessor.accessWithFtpFileProcessor(host, port, username, password, fileSelector, downloadPath, true, serverRoot);
     }
 
-    public String getSaveRoot() {
-        return saveRoot;
+    public String getDownloadPath() {
+        return downloadPath;
     }
 
 

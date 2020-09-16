@@ -5,7 +5,6 @@ import com.btw.parser.service.IParser;
 import com.fate.file.parse.DBSteerableConfig;
 import com.fate.file.transfer.FileSelector;
 import com.fate.log.ParserLoggerProxy;
-import com.github.junrar.Junrar;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.File;
@@ -32,14 +31,16 @@ public class ParserFactory {
 
     private boolean valid = true;
 
-    public ParserFactory(JdbcTemplate jdbcTemplate) {
+    private FTPFactory ftpFactory;
+
+    public ParserFactory(JdbcTemplate jdbcTemplate, String fileType) {
+        this.fileType = fileType;
         this.config = new DBSteerableConfig(jdbcTemplate);
         Map<String, Object> info = config.queryNoFtpStorage(fileType);
         if (info == null) {
             valid = false;
         } else {
             this.splitType = info.get("PARSE_TYPE").toString();
-            this.saveDir = info.get("SAVE_DIR").toString();
             Object unDir = info.get("UNZIP_DIR");
             if (unDir != null) {
                 this.unzipDir = unDir.toString();
@@ -57,21 +58,35 @@ public class ParserFactory {
         }
     }
 
+    public ParserFactory ftpFactory(FTPFactory ftpFactory) {
+        this.ftpFactory = ftpFactory;
+        this.saveDir = ftpFactory.getDownloadPath();
+        return this;
+    }
+
     public ParserFactory logMapper(ParserLogMapper logMapper) {
         this.logMapper = logMapper;
         return this;
     }
 
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void download() throws Exception{
+        ftpFactory.download(fileSelector);
+    }
+
     public <T> void parseUnrarDir(IParser iParser, boolean delete) {
-        File[] files = new File(saveDir).listFiles();
+        File[] files = new File(unzipDir).listFiles();
         assert files != null;
         for (File file : files) {
             String name = file.getName();
             String order = fileSelector.getOrder(name);
             if (fileSelector.acceptFile(name) && fileSelector.acceptOrder(order)) {
                 try {
-                    Junrar.extract(file.getPath(), this.unzipDir);
-                    //日志代理
+//                    Unrar5.window(file.getPath(), this.unzipDir, "");
+//                    Junrar.extract(file.getPath(), this.unzipDir);
                     IParser pro = new ParserLoggerProxy(logMapper, fileType, name, iParser).getTarget();
                     pro.parse(file);
                     config.updateOrder(fileType, order);
