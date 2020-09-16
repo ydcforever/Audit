@@ -43,7 +43,7 @@ public class RefundParser implements IParser {
             public void doWith(String line, int lineNo, String fileName, Object object) throws Exception {
                 String[] split = line.split(",");
 
-                String key = split[0] + split[1] + split[2] + split[3];
+                String key = split[0] + split[1];
                 if(!parent.contains(key)) {
                     parent.add(key);
                     String[] row = refundPool.getBatchRow();

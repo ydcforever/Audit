@@ -12,14 +12,14 @@ import java.io.File;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
-public class CouponTestParserTest extends TestCase {
+public class CouponTestParser extends TestCase {
 
     @Autowired
-    private CouponTestParser couponTestParser;
+    private CouponParser couponParser;
 
     @Test
     public void parse() throws Exception {
         String path = "G:\\解析测试\\itaxCoupon20191201B.txt";
-        couponTestParser.parse(new File(path));
+        couponParser.parse(new File(path));
     }
 }

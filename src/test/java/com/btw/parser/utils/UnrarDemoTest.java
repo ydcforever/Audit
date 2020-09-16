@@ -1,10 +1,13 @@
 package com.btw.parser.utils;
 
 import com.fate.decompress.Unrar5;
+import junit.framework.TestCase;
+import org.junit.Test;
 
-public class UnrarDemo {
+public class UnrarDemoTest extends TestCase {
 
-    public static void main(String[] args) {
+    @Test
+    public void testMain() throws Exception {
         String filepath = "C:\\Users\\T440\\Desktop\\beans\\itaxCoupon_Refund20200901.rar";
         String unrarDir = "C:\\Users\\T440\\Desktop\\beans";
         int exitCode = Unrar5.window(filepath, unrarDir, "G:\\WinRar\\WinRAR.exe");

@@ -2,6 +2,7 @@ package com.btw.parser.utils;
 
 import com.btw.parser.mapper.ParserLogMapper;
 import com.btw.parser.service.IParser;
+import com.fate.decompress.Unrar5;
 import com.fate.file.parse.DBSteerableConfig;
 import com.fate.file.transfer.FileSelector;
 import com.fate.log.ParserLoggerProxy;
@@ -77,7 +78,21 @@ public class ParserFactory {
         ftpFactory.download(fileSelector);
     }
 
-    public <T> void parseUnrarDir(IParser iParser, boolean delete) {
+    public void unrar(boolean delete){
+        File[] files = new File(saveDir).listFiles();
+        for(File file: files) {
+            String name = file.getName();
+            String order = fileSelector.getOrder(name);
+            if (fileSelector.acceptFile(name) && fileSelector.acceptOrder(order)) {
+                Unrar5.linux(file.getPath(), this.unzipDir);
+                if (delete) {
+                    file.delete();
+                }
+            }
+        }
+    }
+
+    public <T> void parse(IParser iParser, boolean delete) {
         File[] files = new File(unzipDir).listFiles();
         assert files != null;
         for (File file : files) {
@@ -85,7 +100,7 @@ public class ParserFactory {
             String order = fileSelector.getOrder(name);
             if (fileSelector.acceptFile(name) && fileSelector.acceptOrder(order)) {
                 try {
-//                    Unrar5.window(file.getPath(), this.unzipDir, "");
+                    Unrar5.linux(file.getPath(), this.unzipDir);
 //                    Junrar.extract(file.getPath(), this.unzipDir);
                     IParser pro = new ParserLoggerProxy(logMapper, fileType, name, iParser).getTarget();
                     pro.parse(file);
