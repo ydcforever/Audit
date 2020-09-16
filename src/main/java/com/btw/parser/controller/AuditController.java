@@ -63,7 +63,7 @@ public class AuditController {
         ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_STATUS").logMapper(logMapper);
         factory.download();
         factory.unrar(true);
-        factory.parse(refundParser, true);
+        factory.parse(statusParser, true);
     }
 
 
@@ -73,6 +73,6 @@ public class AuditController {
         ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_COUPON").logMapper(logMapper);
         factory.download();
         factory.unrar(true);
-        factory.parse(refundParser, true);
+        factory.parse(couponParser, true);
     }
 }

@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
-    <display-name>audit</display-name>
+    <display-name>AuditData</display-name>
 
     <context-param>
         <param-name>webAppRootKey</param-name>
-        <param-value>audit</param-value>
+        <param-value>AuditData</param-value>
     </context-param>
 
     <context-param>
