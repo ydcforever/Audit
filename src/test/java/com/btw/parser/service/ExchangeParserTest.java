@@ -1,8 +1,5 @@
 package com.btw.parser.service;
 
-import com.fate.log.IParserLog;
-import com.fate.log.ParserLogger;
-import com.fate.log.ParserLoggerProxy;
 import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,21 +20,5 @@ public class ExchangeParserTest extends TestCase {
     public void testSingle() throws Exception {
         String path = "C:\\Users\\T440\\Desktop\\beans\\audit\\itaxCoupon_Exchange20200701.txt";
         exchangeParser.parse(new File(path));
-    }
-
-    @Test
-    public void testLog() throws Exception {
-        IParser parser = new ParserLoggerProxy(new IParserLog() {
-            @Override
-            public void insertLog(ParserLogger parserLogger) {
-
-            }
-
-            @Override
-            public void updateLog(ParserLogger parserLogger) {
-
-            }
-        }, "Audit", "fileName",  exchangeParser).getTarget();
-//        parser.parse();
     }
 }

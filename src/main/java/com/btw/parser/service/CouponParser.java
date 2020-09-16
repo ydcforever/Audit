@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class CouponParser implements IParser {
@@ -25,18 +23,19 @@ public class CouponParser implements IParser {
     @Autowired
     private CouponTaxTestMapper couponTaxTestMapper;
 
+    private String parent = "";
+
     @Override
     public void parse(File file) throws Exception {
         BatchPool<AuditorCouponTest> ticketPool = getTicketPool();
         BatchPool<AuditorCouponTaxTest> taxPool = getTaxPool();
-        Set<String> set = new HashSet<>();
         LineProcessor<Object> processor = new LineProcessor<Object>() {
             @Override
             public void doWith(String line, int lineNo, String fileName, Object object) throws Exception {
                 String[] split = line.split(",");
                 String key = split[0] + split[1];
-                if(!set.contains(key)){
-                    set.add(key);
+                if(!parent.equals(key)){
+                    parent = key;
                     AuditorCouponTest row = ticketPool.getBatchRow();
                     row.setTicketNo(split[0]+split[1]);
                     row.setSalesCurrencyCode(split[4]);

@@ -35,14 +35,14 @@ public class ExchangeParser implements IParser{
             public void doWith(String line, int lineNo, String fileName, Object object) throws Exception {
                 AuditorExchange row = pool.getBatchRow();
                 String[] split = line.split(",");
-                row.setDateMonth(split[0]);
-                row.setChangeTicketNo(split[1]);
-                row.setChangeIssueDate(split[2]);
-                row.setNo(split[3]);
-                row.setOriginTicketNo(split[4]);
-                row.setCorrespondence(split[5]);
-                row.setOriginIssueDate(split[6]);
-                row.setSalesSource(split[7]);
+                row.setBalMonth(split[0]);
+                row.setCnjTicketNo(split[1]);
+                row.setIssueDate(split[2]);
+                row.setCnjNo(split[3]);
+                row.setOrgTicketNo(split[4]);
+                row.setExchangeStatus(split[5]);
+                row.setOrgIssueDate(split[6]);
+                row.setSource(split[7]);
                 row.setOriSource(fileName);
                 pool.tryBatch();
             }

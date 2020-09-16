@@ -14,9 +14,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by ydc on 2020/9/14.
@@ -33,19 +31,19 @@ public class RefundParser implements IParser {
     @Value("${sql.insert.refundTax}")
     private String insertRefundTaxSQL;
 
+    private String parent = "";
+
     @Override
     public void parse(File file) throws Exception {
-        Set<String> parent = new HashSet<>();
         BatchPool<String[]> refundPool = getRefundPool();
         BatchPool<String[]> refundTaxPool = getRefundTaxPool();
         LineProcessor<Object> processor = new LineProcessor<Object>() {
             @Override
             public void doWith(String line, int lineNo, String fileName, Object object) throws Exception {
                 String[] split = line.split(",");
-
                 String key = split[0] + split[1];
-                if(!parent.contains(key)) {
-                    parent.add(key);
+                if(!parent.equals(key)) {
+                    parent = key;
                     String[] row = refundPool.getBatchRow();
                     System.arraycopy(split, 0, row, 0, 4);
                     row[4] = split[7];

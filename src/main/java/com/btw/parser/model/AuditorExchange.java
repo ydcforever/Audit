@@ -7,86 +7,86 @@ import java.io.Serializable;
  */
 public class AuditorExchange implements Serializable{
 
-    private String dateMonth;
+    private String balMonth;
 
-    private String changeTicketNo;
+    private String cnjTicketNo;
 
-    private String changeIssueDate;
+    private String issueDate;
 
-    private String no;
+    private String cnjNo;
 
-    private String originTicketNo;
+    private String orgTicketNo;
 
-    private String correspondence;
+    private String exchangeStatus;
 
-    private String originIssueDate;
+    private String orgIssueDate;
 
-    private String salesSource;
+    private String source;
 
     private String oriSource;
 
-    public void setDateMonth(String dateMonth) {
-        this.dateMonth = dateMonth;
+    public void setBalMonth(String balMonth) {
+        this.balMonth = balMonth;
     }
 
-    public String getDateMonth() {
-        return dateMonth;
+    public String getBalMonth() {
+        return balMonth;
     }
 
-    public void setChangeTicketNo(String changeTicketNo) {
-        this.changeTicketNo = changeTicketNo;
+    public void setCnjTicketNo(String cnjTicketNo) {
+        this.cnjTicketNo = cnjTicketNo;
     }
 
-    public String getChangeTicketNo() {
-        return changeTicketNo;
+    public String getCnjTicketNo() {
+        return cnjTicketNo;
     }
 
-    public void setChangeIssueDate(String changeIssueDate) {
-        this.changeIssueDate = changeIssueDate;
+    public void setIssueDate(String issueDate) {
+        this.issueDate = issueDate;
     }
 
-    public String getChangeIssueDate() {
-        return changeIssueDate;
+    public String getIssueDate() {
+        return issueDate;
     }
 
-    public void setNo(String no) {
-        this.no = no;
+    public void setCnjNo(String cnjNo) {
+        this.cnjNo = cnjNo;
     }
 
-    public String getNo() {
-        return no;
+    public String getCnjNo() {
+        return cnjNo;
     }
 
-    public void setOriginTicketNo(String originTicketNo) {
-        this.originTicketNo = originTicketNo;
+    public void setOrgTicketNo(String orgTicketNo) {
+        this.orgTicketNo = orgTicketNo;
     }
 
-    public String getOriginTicketNo() {
-        return originTicketNo;
+    public String getOrgTicketNo() {
+        return orgTicketNo;
     }
 
-    public void setCorrespondence(String correspondence) {
-        this.correspondence = correspondence;
+    public void setExchangeStatus(String exchangeStatus) {
+        this.exchangeStatus = exchangeStatus;
     }
 
-    public String getCorrespondence() {
-        return correspondence;
+    public String getExchangeStatus() {
+        return exchangeStatus;
     }
 
-    public void setOriginIssueDate(String originIssueDate) {
-        this.originIssueDate = originIssueDate;
+    public void setOrgIssueDate(String orgIssueDate) {
+        this.orgIssueDate = orgIssueDate;
     }
 
-    public String getOriginIssueDate() {
-        return originIssueDate;
+    public String getOrgIssueDate() {
+        return orgIssueDate;
     }
 
-    public void setSalesSource(String salesSource) {
-        this.salesSource = salesSource;
+    public void setSource(String source) {
+        this.source = source;
     }
 
-    public String getSalesSource() {
-        return salesSource;
+    public String getSource() {
+        return source;
     }
 
     public void setOriSource(String oriSource) {
@@ -98,14 +98,14 @@ public class AuditorExchange implements Serializable{
     }
 
     public AuditorExchange test() {
-        this.dateMonth = "";
-        this.changeTicketNo = "";
-        this.changeIssueDate = "";
-        this.no = "";
-        this.originTicketNo = "";
-        this.correspondence = "";
-        this.originIssueDate = "";
-        this.salesSource = "";
+        this.balMonth = "";
+        this.cnjTicketNo = "";
+        this.issueDate = "";
+        this.cnjNo = "";
+        this.orgTicketNo = "";
+        this.exchangeStatus = "";
+        this.orgIssueDate = "";;
+        this.source = "";
         this.oriSource = "";
         return this;
     }
