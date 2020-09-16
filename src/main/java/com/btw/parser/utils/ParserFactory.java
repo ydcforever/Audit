@@ -42,6 +42,7 @@ public class ParserFactory {
             valid = false;
         } else {
             this.splitType = info.get("PARSE_TYPE").toString();
+            this.saveDir = info.get("SAVE_DIR").toString();
             Object unDir = info.get("UNZIP_DIR");
             if (unDir != null) {
                 this.unzipDir = unDir.toString();
@@ -61,7 +62,6 @@ public class ParserFactory {
 
     public ParserFactory ftpFactory(FTPFactory ftpFactory) {
         this.ftpFactory = ftpFactory;
-        this.saveDir = ftpFactory.getDownloadPath();
         return this;
     }
 
@@ -75,7 +75,7 @@ public class ParserFactory {
     }
 
     public void download() throws Exception{
-        ftpFactory.download(fileSelector);
+        ftpFactory.download(this.saveDir, fileSelector);
     }
 
     public void unrar(boolean delete){

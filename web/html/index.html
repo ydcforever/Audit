@@ -15,46 +15,48 @@
     </style>
 </head>
 <body>
-<tr>
-    <td>Exchange</td>
-    <td><input type="text" data-begin="Exchange" placeholder="起始标志"/><input type="text" data-end="Exchange"
-                                                                            placeholder="终止标志"/></td>
-    <td><input class="one" type="button" value="单次" data-url="./audit/parser/exchange.do" data-ref="Exchange"></td>
-    <td><input type="text" id="Exchange"/></td>
-    <td><input class="start" type="button" value="开启" data-id="Exchange" data-cron="Exchange_cron"></td>
-    <td><input type="text" id="Exchange_cron" placeholder="0 15 10 * * ?"/></td>
-    <td><input class="stop" type="button" value="停止" data-id="Exchange"></td>
-</tr>
+<table>
+    <tr>
+        <td>ITAX_EXCHANGE</td>
+        <td><input type="text" data-begin="ITAX_EXCHANGE" placeholder="起始标志"/><input type="text" data-end="ITAX_EXCHANGE"
+                                                                                placeholder="终止标志"/></td>
+        <td><input class="one" type="button" value="单次" data-url="./audit/parser/exchange.do" data-ref="ITAX_EXCHANGE"></td>
+        <td><input type="text" id="ITAX_EXCHANGE"/></td>
+        <td><input class="start" type="button" value="开启" data-id="ITAX_EXCHANGE" data-cron="ITAX_EXCHANGE_cron"></td>
+        <td><input type="text" id="ITAX_EXCHANGE_cron" placeholder="0 15 10 * * ?"/></td>
+        <td><input class="stop" type="button" value="停止" data-id="ITAX_EXCHANGE"></td>
+    </tr>
 
-<tr>
-    <td>Refund</td>
-    <td><input type="text" data-begin="Refund"/><input type="text" data-end="Refund"/></td>
-    <td><input class="one" type="button" value="单次" data-url="./audit/parser/refund.do" data-ref="Refund"></td>
-    <td><input type="text" id="Refund"/></td>
-    <td><input class="start" type="button" value="开启" data-id="Refund" data-cron="Refund_cron"></td>
-    <td><input type="text" id="Refund_cron"/></td>
-    <td><input class="stop" type="button" value="停止" data-id="Refund"></td>
-</tr>
+    <tr>
+        <td>ITAX_REFUND</td>
+        <td><input type="text" data-begin="ITAX_REFUND"/><input type="text" data-end="ITAX_REFUND"/></td>
+        <td><input class="one" type="button" value="单次" data-url="./audit/parser/refund.do" data-ref="ITAX_REFUND"></td>
+        <td><input type="text" id="ITAX_REFUND"/></td>
+        <td><input class="start" type="button" value="开启" data-id="ITAX_REFUND" data-cron="ITAX_REFUND_cron"></td>
+        <td><input type="text" id="ITAX_REFUND_cron"/></td>
+        <td><input class="stop" type="button" value="停止" data-id="ITAX_REFUND"></td>
+    </tr>
 
-<tr>
-    <td>Status</td>
-    <td><input type="text" data-begin="Status"/><input type="text" data-end="Status"/></td>
-    <td><input class="one" type="button" value="单次" data-url="./audit/parser/status.do" data-ref="Status"></td>
-    <td><input type="text" id="Status"/></td>
-    <td><input class="start" type="button" value="开启" data-id="Status" data-cron="Status_cron"></td>
-    <td><input type="text" id="Status_cron"/></td>
-    <td><input class="stop" type="button" value="停止" data-id="Status"></td>
-</tr>
+    <tr>
+        <td>ITAX_STATUS</td>
+        <td><input type="text" data-begin="ITAX_STATUS"/><input type="text" data-end="ITAX_STATUS"/></td>
+        <td><input class="one" type="button" value="单次" data-url="./audit/parser/status.do" data-ref="ITAX_STATUS"></td>
+        <td><input type="text" id="ITAX_STATUS"/></td>
+        <td><input class="start" type="button" value="开启" data-id="ITAX_STATUS" data-cron="ITAX_STATUS_cron"></td>
+        <td><input type="text" id="ITAX_STATUS_cron"/></td>
+        <td><input class="stop" type="button" value="停止" data-id="ITAX_STATUS"></td>
+    </tr>
 
-<tr>
-    <td>itaxCoupon</td>
-    <td><input type="text" data-begin="Coupon"/><input type="text" data-end="Coupon"/></td>
-    <td><input class="one" type="button" value="单次" data-url="./audit/parser/coupon.do" data-ref="Coupon"></td>
-    <td><input type="text" id="Coupon"/></td>
-    <td><input class="start" type="button" value="开启" data-id="Coupon" data-cron="Coupon_cron"></td>
-    <td><input type="text" id="Coupon_cron"/></td>
-    <td><input class="stop" type="button" value="停止" data-id="Coupon"></td>
-</tr>
+    <tr>
+        <td>ITAX_COUPON</td>
+        <td><input type="text" data-begin="ITAX_COUPON"/><input type="text" data-end="ITAX_COUPON"/></td>
+        <td><input class="one" type="button" value="单次" data-url="./audit/parser/coupon.do" data-ref="ITAX_COUPON"></td>
+        <td><input type="text" id="ITAX_COUPON"/></td>
+        <td><input class="start" type="button" value="开启" data-id="ITAX_COUPON" data-cron="ITAX_COUPON_cron"></td>
+        <td><input type="text" id="ITAX_COUPON_cron"/></td>
+        <td><input class="stop" type="button" value="停止" data-id="ITAX_COUPON"></td>
+    </tr>
+</table>
 <script type="text/javascript">
     $(function () {
         $(".one").each(function () {
@@ -72,7 +74,7 @@
             $.ajax({
                 type: "POST",
                 url: "./cfg/update.do",
-                data: {id: id, begin : b, end : e},
+                data: {id: id, begin: b, end: e},
                 dataType: "json",
                 success: function () {
                     $.ajax({
@@ -96,21 +98,21 @@
 
         $(".start").click(function () {
             var id = $(this).attr("data-id");
-            var cron=$("#" +$(this).attr("data-cron")).val();
+            var cron = $("#" + $(this).attr("data-cron")).val();
             var b = $("input[data-begin='" + id + "']").val();
             var e = $("input[data-end='" + id + "']").val();
-            if(b != "" || e != "") {
+            if (b != "" || e != "") {
                 $.ajax({
                     type: "POST",
                     url: "./cfg/update.do",
-                    data: {id: id, begin : b, end : e},
+                    data: {id: id, begin: b, end: e},
                     dataType: "json",
                     success: function () {
                         if (cron == null || cron == "") {
                             $.ajax({
                                 type: "POST",
                                 url: './job/start.do',
-                                data : {id : id},
+                                data: {id: id},
                                 success: function () {
                                     alert(id + "开启定时")
                                 },
@@ -122,7 +124,7 @@
                             $.ajax({
                                 type: "POST",
                                 url: './job/modify.do',
-                                data : {id : id, cron : cron},
+                                data: {id: id, cron: cron},
                                 success: function () {
                                     alert(id + "开启定时");
                                 },
@@ -144,7 +146,7 @@
             $.ajax({
                 type: "POST",
                 url: './job/stop.do',
-                data : {id : id},
+                data: {id: id},
                 success: function () {
                     alert(id + "定时停止");
                 },
@@ -162,7 +164,7 @@
             data: {id: module},
             dataType: "json",
             success: function (data) {
-                if(data != null && data != ""){
+                if (data != null && data != "") {
                     $("input[data-begin='" + module + "']").val(data.BEGIN_FLAG);
                     $("input[data-end='" + module + "']").val(data.END_FLAG);
                 }

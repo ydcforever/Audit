@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="Audit:war">
+  <artifact type="war" build-on-make="true" name="Audit:war">
     <output-path>$PROJECT_DIR$/out/artifacts/Audit_war</output-path>
     <root id="archive" name="Audit_war.war">
       <element id="artifact" artifact-name="Audit:war exploded" />

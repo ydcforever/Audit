@@ -27,21 +27,13 @@ public class FTPFactory {
     @Value("${ftp.acca.root}")
     private String serverRoot;
 
-    @Value("${download.path}")
-    private String downloadPath;
-
     public FTPFactory() {
     }
 
-    public void download(FileSelector fileSelector) throws Exception {
+    public void download(String downloadPath, FileSelector fileSelector) throws Exception {
         checkSaveDir(downloadPath);
         FTPAccessor.accessWithFtpFileProcessor(host, port, username, password, fileSelector, downloadPath, true, serverRoot);
     }
-
-    public String getDownloadPath() {
-        return downloadPath;
-    }
-
 
     private void checkSaveDir(String path){
         File file = new File(path);

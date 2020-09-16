@@ -29,7 +29,7 @@ public class RefundParserTest extends TestCase {
 //        refundParser.parse(new File(path));
         ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_REFUND").logMapper(logMapper);
         if(factory.isValid()) {
-            factory.parseUnrarDir(refundParser, false);
+            factory.parse(refundParser, false);
         }
     }
 

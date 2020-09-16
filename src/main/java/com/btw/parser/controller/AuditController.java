@@ -5,6 +5,7 @@ import com.btw.parser.service.CouponParser;
 import com.btw.parser.service.ExchangeParser;
 import com.btw.parser.service.RefundParser;
 import com.btw.parser.service.StatusParser;
+import com.btw.parser.utils.FTPFactory;
 import com.btw.parser.utils.ParserFactory;
 import com.fate.schedule.SteerableSchedule;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/audit/parser")
 public class AuditController {
+
+    @Autowired
+    private FTPFactory ftpFactory;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -39,39 +43,39 @@ public class AuditController {
     private CouponParser couponParser;
 
     @RequestMapping(value = "/exchange.do", method = RequestMethod.POST)
-    @SteerableSchedule(id = "Exchange", cron = "0 30 14 ? * *")
-    public void exchange() throws Exception{
-        ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_EXCHANGE").logMapper(logMapper);
-        factory.download();
+    @SteerableSchedule(id = "ITAX_EXCHANGE", cron = "0 30 14 ? * *")
+    public void exchange() throws Exception {
+        ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_EXCHANGE").logMapper(logMapper).ftpFactory(ftpFactory);
+//        factory.download();
         factory.unrar(true);
         factory.parse(exchangeParser, true);
     }
 
     @RequestMapping(value = "/refund.do", method = RequestMethod.POST)
-    @SteerableSchedule(id = "Refund", cron = "0 30 14 ? * *")
+    @SteerableSchedule(id = "ITAX_REFUND", cron = "0 30 14 ? * *")
     public void refund() throws Exception{
-        ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_REFUND").logMapper(logMapper);
-        factory.download();
+        ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_REFUND").logMapper(logMapper).ftpFactory(ftpFactory);
+//        factory.download();
         factory.unrar(true);
         factory.parse(refundParser, true);
     }
 
 
     @RequestMapping(value = "/status.do", method = RequestMethod.POST)
-    @SteerableSchedule(id = "Status", cron = "0 30 14 ? * *")
+    @SteerableSchedule(id = "ITAX_STATUS", cron = "0 30 14 ? * *")
     public void status() throws Exception{
-        ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_STATUS").logMapper(logMapper);
-        factory.download();
+        ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_STATUS").logMapper(logMapper).ftpFactory(ftpFactory);
+//        factory.download();
         factory.unrar(true);
         factory.parse(statusParser, true);
     }
 
 
     @RequestMapping(value = "/coupon.do", method = RequestMethod.POST)
-    @SteerableSchedule(id = "Coupon", cron = "0 30 14 ? * *")
+    @SteerableSchedule(id = "ITAX_COUPON", cron = "0 30 14 ? * *")
     public void ticket() throws Exception{
-        ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_COUPON").logMapper(logMapper);
-        factory.download();
+        ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_COUPON").logMapper(logMapper).ftpFactory(ftpFactory);
+//        factory.download();
         factory.unrar(true);
         factory.parse(couponParser, true);
     }
