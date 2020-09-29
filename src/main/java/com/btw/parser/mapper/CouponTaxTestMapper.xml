@@ -5,6 +5,7 @@
     <insert id="batchInsert" parameterType="java.util.List">
         INSERT INTO ITAX_AUDITOR_COUPON_TAX_TEST
         (ticket_no,
+        issue_date,
         tax_code,
         tax_definition,
         sales_currency_code,
@@ -16,6 +17,7 @@
         <foreach collection="list" item="item" index="index" separator="UNION ALL">
             SELECT
             #{item.ticketNo, jdbcType=DECIMAL},
+            #{item.issueDate, jdbcType=VARCHAR},
             #{item.taxCode, jdbcType=VARCHAR},
             #{item.taxDefinition, jdbcType=VARCHAR},
             #{item.salesCurrencyCode, jdbcType=VARCHAR},

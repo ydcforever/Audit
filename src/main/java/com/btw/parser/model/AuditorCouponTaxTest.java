@@ -6,6 +6,8 @@ public class AuditorCouponTaxTest implements Serializable {
 
     private String ticketNo;
 
+    private String issueDate;
+
     private String taxCode;
 
     private String taxDefinition;
@@ -18,7 +20,7 @@ public class AuditorCouponTaxTest implements Serializable {
 
     private double diffAmount;
 
-    private double lineNo;
+    private Integer lineNo;
 
     private double diffPrecent;
 
@@ -82,7 +84,7 @@ public class AuditorCouponTaxTest implements Serializable {
         return lineNo;
     }
 
-    public void setLineNo(double lineNo) {
+    public void setLineNo(Integer lineNo) {
         this.lineNo = lineNo;
     }
 
@@ -94,9 +96,18 @@ public class AuditorCouponTaxTest implements Serializable {
         this.diffPrecent = diffPrecent;
     }
 
+    public String getIssueDate() {
+        return issueDate;
+    }
+
+    public void setIssueDate(String issueDate) {
+        this.issueDate = issueDate;
+    }
+
     public AuditorCouponTaxTest test(){
         this.ticketNo="";
         this.taxCode="";
+        this.issueDate = "";
         this.taxDefinition="";
         this.salesCurrencyCode="";
         this.taxAmountReceived=0;
@@ -106,7 +117,4 @@ public class AuditorCouponTaxTest implements Serializable {
         this.diffPrecent=0;
         return this;
     }
-
-
-
 }

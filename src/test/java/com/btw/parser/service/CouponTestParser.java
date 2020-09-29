@@ -22,4 +22,6 @@ public class CouponTestParser extends TestCase {
         String path = "G:\\解析测试\\itaxCoupon20191201B.txt";
         couponParser.parse(new File(path));
     }
+
+
 }

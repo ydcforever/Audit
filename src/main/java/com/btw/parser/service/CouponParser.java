@@ -34,10 +34,10 @@ public class CouponParser implements IParser {
             public void doWith(String line, int lineNo, String fileName, Object object) throws Exception {
                 String[] split = line.split(",");
                 String key = split[0] + split[1];
-                if(!parent.equals(key)){
+                if (!parent.equals(key)) {
                     parent = key;
                     AuditorCouponTest row = ticketPool.getBatchRow();
-                    row.setTicketNo(split[0]+split[1]);
+                    row.setTicketNo(split[0] + split[1]);
                     row.setSalesCurrencyCode(split[4]);
                     row.setRouting(split[5]);
                     row.setIssueDate(split[6]);
@@ -52,20 +52,18 @@ public class CouponParser implements IParser {
                     row.setAgentIataNo(split[17]);
                     row.setOperatingCarrier(split[19]);
                     row.setOriSource(fileName);
-                    //row.setFiller1(split[18]);
-                    //row.setTicketUnionNo(split[19]);
-                    row.setDepartureDate(split[7]);
-                    row.setArriveDate(split[8]);
+                    row.setTicketUnionNo(split[21]);
+                    row.setDepartureDate(adTime(split[7], split[22]));
+                    row.setArriveDate(adTime(split[8], split[23]));
                     ticketPool.tryBatch();
                 }
                 AuditorCouponTaxTest taxRow = taxPool.getBatchRow();
-                taxRow.setTicketNo(split[0]+split[1]);
+                taxRow.setTicketNo(split[0] + split[1]);
+                taxRow.setIssueDate(split[6]);
                 taxRow.setTaxCode(split[2]);
                 taxRow.setTaxDefinition(split[3]);
                 taxRow.setSalesCurrencyCode(split[4]);
                 taxRow.setTaxAmountReceived(Double.parseDouble(split[18]));
-                //row.setTaxAmountDue(Double.parseDouble(split[6]));
-                //row.setDiffAmount(Double.parseDouble(split[7]));
                 taxRow.setLineNo(lineNo);
                 taxPool.tryBatch();
             }
@@ -75,11 +73,10 @@ public class CouponParser implements IParser {
         taxPool.restBatch();
     }
 
-
-    public BatchPool<AuditorCouponTest> getTicketPool(){
-        BatchInsertDB<AuditorCouponTest> insertDB = new BatchInsertDB<AuditorCouponTest>(){
+    public BatchPool<AuditorCouponTest> getTicketPool() {
+        BatchInsertDB<AuditorCouponTest> insertDB = new BatchInsertDB<AuditorCouponTest>() {
             @Override
-            public void doWith(String s, List<AuditorCouponTest> list) throws Exception{
+            public void doWith(String s, List<AuditorCouponTest> list) throws Exception {
                 couponTestMapper.batchInsert(list);
             }
         };
@@ -88,15 +85,30 @@ public class CouponParser implements IParser {
         return pool;
     }
 
-    public BatchPool<AuditorCouponTaxTest> getTaxPool(){
-       BatchInsertDB<AuditorCouponTaxTest> insertDB = new BatchInsertDB<AuditorCouponTaxTest>(){
-           @Override
-           public void doWith(String s, List<AuditorCouponTaxTest> list) throws Exception{
-               couponTaxTestMapper.batchInsert(list);
-           }
-       };
-       BatchPool<AuditorCouponTaxTest> pool = new BatchPool<AuditorCouponTaxTest>("", insertDB, 1000);
-       pool.init(new AuditorCouponTaxTest().test());
-       return pool;
-   }
+    public BatchPool<AuditorCouponTaxTest> getTaxPool() {
+        BatchInsertDB<AuditorCouponTaxTest> insertDB = new BatchInsertDB<AuditorCouponTaxTest>() {
+            @Override
+            public void doWith(String s, List<AuditorCouponTaxTest> list) throws Exception {
+                couponTaxTestMapper.batchInsert(list);
+            }
+        };
+        BatchPool<AuditorCouponTaxTest> pool = new BatchPool<AuditorCouponTaxTest>("", insertDB, 1000);
+        pool.init(new AuditorCouponTaxTest().test());
+        return pool;
+    }
+
+
+    public static String adTime(String dayStr, String timeStr){
+        String[] day = dayStr.split(";");
+        String[] time = timeStr.split(";");
+        StringBuilder d = new StringBuilder();
+        for(int i = 0, len = day.length; i < len; i++){
+            if(i> 0) {
+                d.append(";");
+            }
+            d.append(day[i]).append(" ").append(time[0].substring(0, 5));
+        }
+        return d.toString();
+    }
+
 }

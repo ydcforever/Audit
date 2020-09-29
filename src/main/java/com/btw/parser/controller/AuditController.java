@@ -46,8 +46,8 @@ public class AuditController {
     @SteerableSchedule(id = "ITAX_EXCHANGE", cron = "0 30 14 ? * *")
     public void exchange() throws Exception {
         ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_EXCHANGE").logMapper(logMapper).ftpFactory(ftpFactory);
-        factory.download();
-        factory.unrar(true);
+//        factory.download();
+        factory.unrar(false);
         factory.parse(exchangeParser, true);
     }
 
@@ -55,8 +55,8 @@ public class AuditController {
     @SteerableSchedule(id = "ITAX_REFUND", cron = "0 30 14 ? * *")
     public void refund() throws Exception{
         ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_REFUND").logMapper(logMapper).ftpFactory(ftpFactory);
-        factory.download();
-        factory.unrar(true);
+//        factory.download();
+        factory.unrar(false);
         factory.parse(refundParser, true);
     }
 
@@ -65,8 +65,8 @@ public class AuditController {
     @SteerableSchedule(id = "ITAX_STATUS", cron = "0 30 14 ? * *")
     public void status() throws Exception{
         ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_STATUS").logMapper(logMapper).ftpFactory(ftpFactory);
-        factory.download();
-        factory.unrar(true);
+//        factory.download();
+        factory.unrar(false);
         factory.parse(statusParser, true);
     }
 
@@ -75,8 +75,8 @@ public class AuditController {
     @SteerableSchedule(id = "ITAX_COUPON", cron = "0 30 14 ? * *")
     public void ticket() throws Exception{
         ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_COUPON").logMapper(logMapper).ftpFactory(ftpFactory);
-        factory.download();
-        factory.unrar(true);
+//        factory.download();
+        factory.unrar(false);
         factory.parse(couponParser, true);
     }
 }
