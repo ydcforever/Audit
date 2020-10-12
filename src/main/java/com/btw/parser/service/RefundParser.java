@@ -46,7 +46,8 @@ public class RefundParser implements IParser {
                     parent = key;
                     String[] row = refundPool.getBatchRow();
                     System.arraycopy(split, 0, row, 0, 4);
-                    row[4] = split[7];
+                    row[4] = fileName;
+                    row[5] = split[7];
                     refundPool.tryBatch();
                 }
 
@@ -73,9 +74,10 @@ public class RefundParser implements IParser {
                         String[] a = list.get(i);
                         ps.setString(1, a[0]);
                         ps.setString(2, a[1]);
-                        ps.setString(3, a[2]);
+                        ps.setString(3, dateFormat(a[2]));
                         ps.setString(4, a[3]);
                         ps.setString(5, a[4]);
+                        ps.setString(6, a[5]);
                     }
 
                     @Override
@@ -86,7 +88,7 @@ public class RefundParser implements IParser {
             }
         };
         BatchPool<String[]> poolRefund = new BatchPool<String[]>("", insertRefund, 500);
-        poolRefund.init(new String[5]);
+        poolRefund.init(new String[6]);
         return poolRefund;
     };
 
@@ -100,7 +102,7 @@ public class RefundParser implements IParser {
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
                         String[] a = list.get(i);
                         ps.setString(1, a[0]);
-                        ps.setString(2, a[1]);
+                        ps.setString(2, dateFormat(a[1]));
                         ps.setString(3, a[2]);
                         ps.setString(4, a[3]);
                         ps.setBigDecimal(5, str2num(a[4]));
@@ -123,6 +125,14 @@ public class RefundParser implements IParser {
             return new BigDecimal(value);
         } catch (Exception e) {
             return new BigDecimal(0);
+        }
+    }
+
+    private static String dateFormat(String date){
+        if (date.contains("-")) {
+            return date;
+        } else {
+            return date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6);
         }
     }
 }

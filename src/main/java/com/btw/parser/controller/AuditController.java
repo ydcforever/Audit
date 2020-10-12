@@ -47,8 +47,8 @@ public class AuditController {
     public void exchange() throws Exception {
         ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_EXCHANGE").logMapper(logMapper).ftpFactory(ftpFactory);
 //        factory.download();
-        factory.unrar(false);
-        factory.parse(exchangeParser, true);
+//        factory.unrar(false);
+        factory.parse(exchangeParser, false, true);
     }
 
     @RequestMapping(value = "/refund.do", method = RequestMethod.POST)
@@ -56,8 +56,8 @@ public class AuditController {
     public void refund() throws Exception{
         ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_REFUND").logMapper(logMapper).ftpFactory(ftpFactory);
 //        factory.download();
-        factory.unrar(false);
-        factory.parse(refundParser, true);
+//        factory.unrar(false);
+        factory.parse(refundParser, false, true);
     }
 
 
@@ -66,8 +66,8 @@ public class AuditController {
     public void status() throws Exception{
         ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_STATUS").logMapper(logMapper).ftpFactory(ftpFactory);
 //        factory.download();
-        factory.unrar(false);
-        factory.parse(statusParser, true);
+//        factory.unrar(false);
+        factory.parse(statusParser, false, true);
     }
 
 
@@ -76,7 +76,7 @@ public class AuditController {
     public void ticket() throws Exception{
         ParserFactory factory = new ParserFactory(jdbcTemplate, "ITAX_COUPON").logMapper(logMapper).ftpFactory(ftpFactory);
 //        factory.download();
-        factory.unrar(false);
-        factory.parse(couponParser, true);
+//        factory.unrar(false);
+        factory.parse(couponParser, false, true);
     }
 }

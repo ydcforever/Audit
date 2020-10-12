@@ -97,7 +97,6 @@ public class CouponParser implements IParser {
         return pool;
     }
 
-
     public static String adTime(String dayStr, String timeStr){
         String[] day = dayStr.split(";");
         String[] time = timeStr.split(";");

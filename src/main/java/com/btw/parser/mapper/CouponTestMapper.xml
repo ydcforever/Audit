@@ -17,6 +17,7 @@
         <result column="AGENT_IATA_NO" property="agentIataNo" jdbcType="DECIMAL"/>
         <result column="OPERATING_CARRIER" property="operatingCarrier" jdbcType="VARCHAR"/>
         <result column="ORI_SOURCE" property="oriSource" jdbcType="VARCHAR"/>
+        <result column="TICKET_UNION_NO" property="ticketUnionNo" jdbcType="VARCHAR"/>
         <result column="DEPARTURE_DATE" property="departureDate" jdbcType="VARCHAR"/>
         <result column="ARRIVE_DATE" property="arriveDate" jdbcType="VARCHAR"/>
     </resultMap>
@@ -36,6 +37,7 @@
         gds_system,
         sales_source,
         agent_iata_no,
+        ticket_union_no,
         operating_carrier,
         ori_source,
         departure_date,
@@ -55,6 +57,7 @@
             #{item.gdsSystem, jdbcType=VARCHAR},
             #{item.salesSource, jdbcType=VARCHAR},
             #{item.agentIataNo, jdbcType=DECIMAL},
+            #{item.ticketUnionNo, jdbcType=VARCHAR},
             #{item.operatingCarrier, jdbcType=VARCHAR},
             #{item.oriSource, jdbcType=VARCHAR},
             #{item.departureDate, jdbcType=VARCHAR},
