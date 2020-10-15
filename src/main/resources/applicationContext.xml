@@ -25,7 +25,7 @@
     <mvc:annotation-driven/>
 
     <bean id="manager" class="com.fate.schedule.SteerableScheduleManager">
-        <constructor-arg name="poolSize" value="35" />
+        <constructor-arg name="poolSize" value="6" />
         <constructor-arg name="autoOpen" value="false"/>
     </bean>
     <!-- implementor提供者

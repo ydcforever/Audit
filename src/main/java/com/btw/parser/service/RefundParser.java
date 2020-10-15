@@ -1,5 +1,6 @@
 package com.btw.parser.service;
 
+import com.btw.parser.utils.ParserUtil;
 import com.fate.file.parse.batch.BatchInsertDB;
 import com.fate.file.parse.batch.BatchPool;
 import com.fate.file.parse.processor.FileProcessor;
@@ -33,8 +34,14 @@ public class RefundParser implements IParser {
 
     private String parent = "";
 
+//    private BatchPool<String[]> refundPool = getRefundPool();
+//
+//    private BatchPool<String[]> refundTaxPool = getRefundTaxPool();
+
     @Override
     public void parse(File file) throws Exception {
+//        refundPool.reset();
+//        refundTaxPool.reset();
         BatchPool<String[]> refundPool = getRefundPool();
         BatchPool<String[]> refundTaxPool = getRefundTaxPool();
         LineProcessor<Object> processor = new LineProcessor<Object>() {
@@ -61,6 +68,8 @@ public class RefundParser implements IParser {
         FileProcessor.getInstance().process(file, processor);
         refundPool.restBatch();
         refundTaxPool.restBatch();
+        refundPool.close();
+        refundTaxPool.close();
     }
 
     private BatchPool<String[]> getRefundPool(){
@@ -74,7 +83,7 @@ public class RefundParser implements IParser {
                         String[] a = list.get(i);
                         ps.setString(1, a[0]);
                         ps.setString(2, a[1]);
-                        ps.setString(3, dateFormat(a[2]));
+                        ps.setString(3, ParserUtil.dateFormat(a[2]));
                         ps.setString(4, a[3]);
                         ps.setString(5, a[4]);
                         ps.setString(6, a[5]);
@@ -102,7 +111,7 @@ public class RefundParser implements IParser {
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
                         String[] a = list.get(i);
                         ps.setString(1, a[0]);
-                        ps.setString(2, dateFormat(a[1]));
+                        ps.setString(2, ParserUtil.dateFormat(a[1]));
                         ps.setString(3, a[2]);
                         ps.setString(4, a[3]);
                         ps.setBigDecimal(5, str2num(a[4]));
@@ -125,14 +134,6 @@ public class RefundParser implements IParser {
             return new BigDecimal(value);
         } catch (Exception e) {
             return new BigDecimal(0);
-        }
-    }
-
-    private static String dateFormat(String date){
-        if (date.contains("-")) {
-            return date;
-        } else {
-            return date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6);
         }
     }
 }

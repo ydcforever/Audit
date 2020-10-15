@@ -2,6 +2,7 @@ package com.btw.parser.service;
 
 import com.btw.parser.mapper.ExchangeMapper;
 import com.btw.parser.model.AuditorExchange;
+import com.btw.parser.utils.ParserUtil;
 import com.fate.file.parse.batch.BatchInsertDB;
 import com.fate.file.parse.batch.BatchPool;
 import com.fate.file.parse.processor.FileProcessor;
@@ -21,15 +22,10 @@ public class ExchangeParser implements IParser{
     @Autowired
     private ExchangeMapper exchangeMapper;
 
+//    private BatchPool<AuditorExchange> pool = buildPool();
+
     public void parse(File file) throws Exception {
-        BatchInsertDB<AuditorExchange> insertDB = new BatchInsertDB<AuditorExchange>(){
-            @Override
-            public void doWith(String s, List<AuditorExchange> list) throws Exception{
-                exchangeMapper.batchInsert(list);
-            }
-        };
-        BatchPool<AuditorExchange> pool = new BatchPool<AuditorExchange>("", insertDB, 500);
-        pool.init(new AuditorExchange().test());
+        BatchPool<AuditorExchange> pool = getPool();
         LineProcessor<Object> processor = new LineProcessor<Object>() {
             @Override
             public void doWith(String line, int lineNo, String fileName, Object object) throws Exception {
@@ -37,7 +33,7 @@ public class ExchangeParser implements IParser{
                 String[] split = line.split(",");
                 row.setBalMonth(split[0]);
                 row.setCnjTicketNo(split[1]);
-                row.setIssueDate(split[2]);
+                row.setIssueDate(ParserUtil.dateFormat(split[2]));
                 row.setCnjNo(split[3]);
                 row.setOrgTicketNo(split[4]);
                 row.setExchangeStatus(split[5]);
@@ -49,5 +45,18 @@ public class ExchangeParser implements IParser{
         };
         FileProcessor.getInstance().process(file, processor);
         pool.restBatch();
+        pool.close();
+    }
+
+    private BatchPool<AuditorExchange> getPool(){
+        BatchInsertDB<AuditorExchange> insertDB = new BatchInsertDB<AuditorExchange>(){
+            @Override
+            public void doWith(String s, List<AuditorExchange> list) throws Exception{
+                exchangeMapper.batchInsert(list);
+            }
+        };
+        BatchPool<AuditorExchange> pool = new BatchPool<AuditorExchange>("", insertDB, 500);
+        pool.init(new AuditorExchange().test());
+        return pool;
     }
 }

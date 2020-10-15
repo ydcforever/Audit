@@ -25,10 +25,15 @@ public class CouponParser implements IParser {
 
     private String parent = "";
 
+//    private BatchPool<AuditorCouponTest> ticketPool = getTicketPool();
+//
+//    private BatchPool<AuditorCouponTaxTest> taxPool = getTaxPool();
+
     @Override
     public void parse(File file) throws Exception {
         BatchPool<AuditorCouponTest> ticketPool = getTicketPool();
         BatchPool<AuditorCouponTaxTest> taxPool = getTaxPool();
+
         LineProcessor<Object> processor = new LineProcessor<Object>() {
             @Override
             public void doWith(String line, int lineNo, String fileName, Object object) throws Exception {
@@ -71,9 +76,11 @@ public class CouponParser implements IParser {
         FileProcessor.getInstance().process(file, processor);
         ticketPool.restBatch();
         taxPool.restBatch();
+        ticketPool.close();
+        taxPool.close();
     }
 
-    public BatchPool<AuditorCouponTest> getTicketPool() {
+    private BatchPool<AuditorCouponTest> getTicketPool() {
         BatchInsertDB<AuditorCouponTest> insertDB = new BatchInsertDB<AuditorCouponTest>() {
             @Override
             public void doWith(String s, List<AuditorCouponTest> list) throws Exception {
@@ -85,7 +92,7 @@ public class CouponParser implements IParser {
         return pool;
     }
 
-    public BatchPool<AuditorCouponTaxTest> getTaxPool() {
+    private BatchPool<AuditorCouponTaxTest> getTaxPool() {
         BatchInsertDB<AuditorCouponTaxTest> insertDB = new BatchInsertDB<AuditorCouponTaxTest>() {
             @Override
             public void doWith(String s, List<AuditorCouponTaxTest> list) throws Exception {
